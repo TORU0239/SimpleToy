@@ -33,23 +33,26 @@ class MainActivity : AppCompatActivity() {
         list.add("Word")
         list.add("Hyundee")
 
-        val adapter = BasicAdapter(list){
-            val intent = Intent(this, DetailActivity::class.java)
-            intent.putExtra("Name", it)
-            startActivity(intent)
-        }
+//        val adapter = BasicAdapter(list){
+//            val intent = Intent(this, DetailActivity::class.java)
+//            intent.putExtra("Name", it)
+//            startActivity(intent)
+//        }
+
+        // 예를 다시 쓰면
+        val adapter = BasicAdapter(list, { higherOrder(it) })
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
     }
 
-    fun test(s:String?){
+    fun higherOrder(s:String):Unit{
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra("Name", s)
         startActivity(intent)
     }
 
-    class BasicAdapter (val dataList:ArrayList<String>, val itemClick:(String?)->Unit) : RecyclerView.Adapter<MainVH>(){
+    class BasicAdapter (val dataList:ArrayList<String>, val itemClick:(String)->Unit) : RecyclerView.Adapter<MainVH>(){
 
         override fun onBindViewHolder(holder: MainVH?, position: Int) {
             holder?.updateView(dataList[position])
@@ -66,12 +69,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    class MainVH(itemView: View, val itemClick:(String?)->Unit) : RecyclerView.ViewHolder(itemView) {
+    class MainVH(itemView: View, val itemClick:(String)->Unit) : RecyclerView.ViewHolder(itemView) {
         val text:TextView by lazy{
             itemView.findViewById(R.id.txt_vh) as TextView
         }
 
-        fun updateView(s:String?){
+        fun updateView(s:String){
             text.text = s
             itemView.setOnClickListener {
                 itemClick(s)
