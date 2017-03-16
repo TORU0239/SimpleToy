@@ -33,12 +33,6 @@ class MainActivity : AppCompatActivity() {
         list.add("Word")
         list.add("Hyundee")
 
-//        val adapter = BasicAdapter(list){
-//            val intent = Intent(this, DetailActivity::class.java)
-//            intent.putExtra("Name", it)
-//            startActivity(intent)
-//        }
-
         // 예를 다시 쓰면
         val adapter = BasicAdapter(list, { higherOrder(it) })
 
