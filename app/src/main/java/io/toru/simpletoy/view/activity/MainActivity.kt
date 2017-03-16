@@ -25,13 +25,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun initUI(){
-        val list  = ArrayList<Person>()
+        var list  = ArrayList<Person>()
         list.add(Person("Pluu", "Yanolja"))
         list.add(Person("Kunny", "Lezhin"))
         list.add(Person("Steve", "GDE"))
         list.add(Person("Nurimaru", "Lezhin"))
         list.add(Person("Toru", "HeyBeauty"))
         list.add(Person("Word", "SoCar"))
+        list.add(Person("Taehwan", "Yogiyo"))
+
+//        list = list.filter { it.occupation == "Lezhin" } as ArrayList<Person>
 
         // 예를 다시 쓰면
         val adapter = BasicAdapter(list, { higherOrder(it) })
@@ -46,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    class BasicAdapter (val dataList:ArrayList<Person>, val itemClick:(String)->Unit) : RecyclerView.Adapter<MainVH>(){
+    class BasicAdapter (val dataList:List<Person>, val itemClick:(String)->Unit) : RecyclerView.Adapter<MainVH>(){
 
         override fun onBindViewHolder(holder: MainVH?, position: Int) {
             holder?.updateView(dataList[position])
