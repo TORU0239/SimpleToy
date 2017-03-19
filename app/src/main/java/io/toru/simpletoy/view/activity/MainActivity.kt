@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import io.toru.simpletoy.R
 import io.toru.simpletoy.framework.activity.BaseActivity
 import io.toru.simpletoy.model.RailWay
@@ -54,9 +55,8 @@ class MainActivity : BaseActivity() {
             override fun onResponse(call: Call<List<RailWay>>?, response: Response<List<RailWay>>?) {
                 response?.apply {
                     when(code()){
-                        200 ->{
-                            recyclerView.adapter = MainAdapter(body())
-                        }
+                        200 -> recyclerView.adapter = MainAdapter(body())
+                        else-> Toast.makeText(this@MainActivity, "Server Error!", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
