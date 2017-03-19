@@ -1,5 +1,6 @@
 package io.toru.simpletoy.view.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -29,7 +30,12 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initUI()
         testAllRailWay()
+    }
+
+    fun initUI(){
+        recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
     }
 
 
@@ -47,8 +53,11 @@ class MainActivity : BaseActivity() {
 
             override fun onResponse(call: Call<List<RailWay>>?, response: Response<List<RailWay>>?) {
                 response?.apply {
-                    recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
-                    recyclerView.adapter = MainAdapter(body())
+                    when(code()){
+                        200 ->{
+                            recyclerView.adapter = MainAdapter(body())
+                        }
+                    }
                 }
             }
         })
@@ -93,7 +102,19 @@ class MainActivity : BaseActivity() {
             lineName = itemView.findViewById(R.id.txt_line_name) as TextView
             lineOperator = itemView.findViewById(R.id.txt_line_operator) as TextView
             lineName.text = obj.title
-            lineOperator.text = obj.operator
+
+            lineOperator.text = obj.operator.removeColon()[1]
+
+            itemView.setOnClickListener {
+                val intent = Intent(it.context,DetailActivity::class.java).apply {
+                    putExtra("Name", obj.title)
+                }
+                it.context?.startActivity(intent)
+            }
+        }
+
+        fun String.removeColon():List<String>{
+            return this.split(":")
         }
     }
 }
