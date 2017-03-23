@@ -107,10 +107,12 @@ class MainActivity : BaseActivity() {
             lineName.text = obj.title
 
             lineOperator.text = obj.operator.removeColon()[1]
-
+            itemView.tag = obj
             itemView.setOnClickListener {
                 val intent = Intent(it.context,DetailActivity::class.java).apply {
-                    putExtra("Name", obj.title)
+                    putExtra("title", obj.title)
+                    putExtra("stationOrder", obj.stationOrder)
+                    putExtra("travelTime", obj.travelTime)
                 }
                 it.context?.startActivity(intent)
             }
