@@ -22,7 +22,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MainActivity : BaseActivity() {
+class RailwayListActivity : BaseActivity() {
     override fun getLayoutID(): Int {
         return R.layout.activity_main
     }
@@ -38,8 +38,8 @@ class MainActivity : BaseActivity() {
     }
 
     fun initUI(){
-        recyclerView.addItemDecoration(DividerItemDecoration(this@MainActivity, DividerItemDecoration.VERTICAL))
-        recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+        recyclerView.addItemDecoration(DividerItemDecoration(this@RailwayListActivity, DividerItemDecoration.VERTICAL))
+        recyclerView.layoutManager = LinearLayoutManager(this@RailwayListActivity)
     }
 
 
@@ -59,7 +59,7 @@ class MainActivity : BaseActivity() {
                 response?.apply {
                     when(code()){
                         200 -> recyclerView.adapter = MainAdapter(body())
-                        else-> Toast.makeText(this@MainActivity, "Server Error!", Toast.LENGTH_SHORT).show()
+                        else-> Toast.makeText(this@RailwayListActivity, "Server Error!", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -109,7 +109,7 @@ class MainActivity : BaseActivity() {
             lineOperator.text = obj.operator.removeColon()[1]
             itemView.tag = obj
             itemView.setOnClickListener {
-                val intent = Intent(it.context,DetailActivity::class.java).apply {
+                val intent = Intent(it.context, RailwayStationActivity::class.java).apply {
                     putExtra("title", obj.title)
                     putExtra("stationOrder", obj.stationOrder)
                     putExtra("travelTime", obj.travelTime)

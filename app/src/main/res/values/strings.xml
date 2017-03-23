@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">SimpleToy</string>
+    <string name="app_name">Tokyo Metro</string>
+    <string name="station_chinese">驛</string>
+    <string name="station_english">Station</string>
+
+    <string name="line_chinese">線</string>
+    <string name="line_english">Line</string>
 </resources>

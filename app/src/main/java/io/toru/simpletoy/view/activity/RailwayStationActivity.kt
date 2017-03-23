@@ -1,6 +1,8 @@
 package io.toru.simpletoy.view.activity
 
+import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -12,7 +14,7 @@ import io.toru.simpletoy.R
 import io.toru.simpletoy.framework.activity.BaseActivity
 import io.toru.simpletoy.model.StationOrder
 
-class DetailActivity : BaseActivity() {
+class RailwayStationActivity : BaseActivity() {
     override fun getLayoutID(): Int {
         return R.layout.activity_detail
     }
@@ -32,15 +34,25 @@ class DetailActivity : BaseActivity() {
             val stationOrderArr = getParcelableArrayExtra("stationOrder")
             var travelTimeArr = getParcelableArrayExtra("travelTime")
 
+
+            fun makeArr(arr:Array<Parcelable>):ArrayList<StationOrder>{
+                val result = ArrayList<StationOrder>()
+                for(item in arr){
+                    val each = item as StationOrder
+                    result.add(each)
+                }
+                return result
+            }
+
             setTitle(title)
-//            rcvAllLineInfo.addItemDecoration(DividerItemDecoration(this@DetailActivity, DividerItemDecoration.VERTICAL))
-//            rcvAllLineInfo.layoutManager = LinearLayoutManager(this@DetailActivity)
-//            rcvAllLineInfo.adapter = LineAdapter(stationOrderArr)코
+            rcvAllLineInfo.addItemDecoration(DividerItemDecoration(this@RailwayStationActivity, DividerItemDecoration.VERTICAL))
+            rcvAllLineInfo.layoutManager = LinearLayoutManager(this@RailwayStationActivity)
+            rcvAllLineInfo.adapter = LineAdapter(makeArr(stationOrderArr))
         }
     }
 
 
-    class LineAdapter(var stationList:Array<StationOrder>) : RecyclerView.Adapter<LineViewHolder>(){
+    class LineAdapter(var stationList:ArrayList<StationOrder>) : RecyclerView.Adapter<LineViewHolder>(){
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): LineViewHolder {
             return LineViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.adapter_line_info, parent, false))
         }
@@ -59,7 +71,15 @@ class DetailActivity : BaseActivity() {
             itemView.findViewById(R.id.txt_station_name) as TextView
         }
         fun updateView(obj:StationOrder){
-            name.text = obj.station
+            obj.station.apply {
+                name.text = split(":")[1].split(".")[2]
+            }
+            itemView.setOnClickListener {
+                itemView.context.startActivity(
+                        Intent(itemView.context,  StationInfoActivity::class.java)
+                                .putExtra("Station_Info", obj.station))
+
+            }
         }
     }
 }
