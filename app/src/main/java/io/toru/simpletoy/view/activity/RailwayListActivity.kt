@@ -104,6 +104,16 @@ class RailwayListActivity : BaseActivity() {
 
             lineName = itemView.findViewById(R.id.txt_line_name) as TextView
             lineOperator = itemView.findViewById(R.id.txt_line_operator) as TextView
+
+            if(obj.stationOrder.size <= 5){
+                if(obj.lineCode == "m"){
+                    obj.title += itemView.context.getString(R.string.branch_chinse)
+                }
+            }
+            else{
+                obj.title += itemView.context.getString(R.string.line_chinese)
+            }
+
             lineName.text = obj.title
 
             lineOperator.text = obj.operator.removeColon()[1]

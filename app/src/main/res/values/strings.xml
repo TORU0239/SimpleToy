@@ -5,4 +5,7 @@
 
     <string name="line_chinese">線</string>
     <string name="line_english">Line</string>
+
+    <string name="branch_chinse">支線</string>
+    <string name="branch_english">branch</string>
 </resources>
