@@ -7,6 +7,7 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -44,10 +45,25 @@ class RailwayStationActivity : BaseActivity() {
                 return result
             }
 
-            setTitle(title)
+            supportActionBar?.apply {
+                setDisplayHomeAsUpEnabled(true)
+                setHomeButtonEnabled(true)
+                setTitle(title)
+            }
+
             rcvAllLineInfo.addItemDecoration(DividerItemDecoration(this@RailwayStationActivity, DividerItemDecoration.VERTICAL))
             rcvAllLineInfo.layoutManager = LinearLayoutManager(this@RailwayStationActivity)
             rcvAllLineInfo.adapter = LineAdapter(makeArr(stationOrderArr))
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId){
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
     }
 

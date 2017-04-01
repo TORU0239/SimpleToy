@@ -3,6 +3,7 @@ package io.toru.simpletoy.view.activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -43,8 +44,16 @@ class StationInfoActivity : BaseActivity(){
         init()
     }
 
+    fun initToolbar(){
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeButtonEnabled(true)
+        }
+    }
+
     fun init(){
         val stationNameParam = intent.getStringExtra("Station_Info")
+        initToolbar()
 
         val retrofit = Retrofit.Builder().baseUrl(URL_ENDPOINT)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -97,4 +106,14 @@ class StationInfoActivity : BaseActivity(){
 
     fun String.makeRailwayLine():String =
             this.split(":")[1]
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId){
+            android.R.id.home ->{
+                finish()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
 }
