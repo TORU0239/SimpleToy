@@ -1,12 +1,12 @@
 package io.toru.simpletoy.view.activity
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.Toolbar
 import android.util.Log
-import android.view.*
-import android.widget.ImageView
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import io.toru.simpletoy.R
@@ -39,9 +39,9 @@ class StationInfoActivity : BaseActivity(){
         findViewById(R.id.ll_connecting_railroad) as LinearLayout
     }
 
-//    val lineImage: ImageView by lazy {
-//        findViewById(R.id.img_line_color) as ImageView
-//    }
+    val txtToolbarStationEngName : TextView by lazy {
+        findViewById(R.id.txt_toolbar_station_eng_name) as TextView
+    }
 
     val toolbar:Toolbar by lazy{
         findViewById(R.id.toolbar_station) as Toolbar
@@ -55,6 +55,7 @@ class StationInfoActivity : BaseActivity(){
     }
 
     fun initToolbar(stationName:String){
+        txtToolbarStationEngName.text = txtStationNameENG.text.toString()
         toolbar.title = stationName
         setSupportActionBar(toolbar)
         supportActionBar?.apply {
@@ -161,7 +162,7 @@ class StationInfoActivity : BaseActivity(){
     }
 
     fun setStatusBarColor(colorCode:Int){
-        window.statusBarColor = ContextCompat.getColor(this@StationInfoActivity, R.color.tokyo_ginza_line)
+        window.statusBarColor = ContextCompat.getColor(this@StationInfoActivity, colorCode)
     }
 
     // extension function
