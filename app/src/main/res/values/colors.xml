@@ -3,4 +3,24 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+
+    <!-- tokyo metro line color -->
+    <color name="tokyo_ginza_line">#FAA428</color>
+    <color name="tokyo_marunouchi_line">#ED272A</color>
+    <color name="tokyo_hibiya_line">#C8BFB3</color>
+    <color name="tokyo_tozai_line">#00AFEF</color>
+    <color name="tokyo_chiyoda_line">#1BB267</color>
+    <color name="tokyo_yurakucho_line">#D2A763</color>
+    <color name="tokyo_hanzomon_line">#8D7EBA</color>
+    <color name="tokyo_nanboku_line">#05B59D</color>
+    <color name="tokyo_fukutoshin_line">#AA5F34</color>
+
+    <!-- toei line color -->
+    <color name="toei_asakusa_line">#EF463E</color>
+    <color name="toei_mita_line">#0073BC</color>
+    <color name="toei_shinjuku_line">#ABBB41</color>
+    <color name="toei_oedo_line">#CF1E65</color>
+
+
 </resources>

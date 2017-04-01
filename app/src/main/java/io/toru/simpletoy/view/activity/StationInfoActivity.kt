@@ -1,10 +1,10 @@
 package io.toru.simpletoy.view.activity
 
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
+import android.support.v7.widget.Toolbar
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.LinearLayout
 import android.widget.TextView
 import io.toru.simpletoy.R
@@ -37,14 +37,20 @@ class StationInfoActivity : BaseActivity(){
         findViewById(R.id.ll_connecting_railroad) as LinearLayout
     }
 
-    override fun getLayoutID(): Int = R.layout.activity_station_info
+    val toolbar:Toolbar by lazy{
+        findViewById(R.id.toolbar_station) as Toolbar
+    }
+
+    override fun getLayoutID(): Int = R.layout.activity_station_info_2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
     }
 
-    fun initToolbar(){
+    fun initToolbar(stationName:String){
+        toolbar.title = stationName
+        setSupportActionBar(toolbar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             setHomeButtonEnabled(true)
@@ -53,8 +59,6 @@ class StationInfoActivity : BaseActivity(){
 
     fun init(){
         val stationNameParam = intent.getStringExtra("Station_Info")
-        initToolbar()
-
         val retrofit = Retrofit.Builder().baseUrl(URL_ENDPOINT)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
@@ -85,6 +89,9 @@ class StationInfoActivity : BaseActivity(){
         txtStationNameJPN.text = (params.title + getString(R.string.station_chinese))
         txtStationNameENG.text = params.sameAs.makeStationName()
 
+        initToolbar(txtStationNameJPN.text.toString())
+
+
         if(params.connectedRailway.isNotEmpty()){
             for(item in 0 until params.connectedRailway.size){
                 val transferLine = LayoutInflater.from(this@StationInfoActivity).inflate(R.layout.row_connection_rail, llConnectingLine, false)
@@ -93,10 +100,15 @@ class StationInfoActivity : BaseActivity(){
                 lineCount.text = ("#" + (item+1))
                 lineName.text = params.connectedRailway[item].makeRailwayLine()
                 llConnectingLine.addView(transferLine)
+
             }
 
             llConnectingLine.visibility = View.VISIBLE
         }
+    }
+
+    fun setStatusBarColor(colorCode:Int){
+        window.statusBarColor = ContextCompat.getColor(this@StationInfoActivity, R.color.tokyo_ginza_line)
     }
 
     // extension function
