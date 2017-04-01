@@ -18,7 +18,7 @@ import io.toru.simpletoy.model.StationOrder
 
 class RailwayStationActivity : BaseActivity() {
 
-    private var lineCode:Int = 0
+    private var lineCode:String = ""
 
     override fun getLayoutID(): Int {
         return R.layout.activity_detail
@@ -38,7 +38,7 @@ class RailwayStationActivity : BaseActivity() {
             val title = getStringExtra("title")
             val stationOrderArr = getParcelableArrayExtra("stationOrder")
             var travelTimeArr = getParcelableArrayExtra("travelTime")
-            lineCode = getIntExtra("line_color", R.color.tokyo_ginza_line)
+            lineCode = getStringExtra("line_color")
 
 
             fun makeArr(arr:Array<Parcelable>):ArrayList<StationOrder>{
@@ -73,7 +73,7 @@ class RailwayStationActivity : BaseActivity() {
     }
 
 
-    class LineAdapter(var stationList:ArrayList<StationOrder>, var lineCode:Int) : RecyclerView.Adapter<LineViewHolder>(){
+    class LineAdapter(var stationList:ArrayList<StationOrder>, var lineCode:String) : RecyclerView.Adapter<LineViewHolder>(){
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): LineViewHolder {
             return LineViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.adapter_line_info, parent, false), lineCode)
         }
@@ -87,7 +87,7 @@ class RailwayStationActivity : BaseActivity() {
         }
     }
 
-    class LineViewHolder(view: View, var lineCode:Int) : RecyclerView.ViewHolder(view){
+    class LineViewHolder(view: View, var lineCode:String) : RecyclerView.ViewHolder(view){
         val name: TextView by lazy {
             itemView.findViewById(R.id.txt_station_name) as TextView
         }

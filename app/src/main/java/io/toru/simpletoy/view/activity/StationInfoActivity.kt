@@ -1,5 +1,6 @@
 package io.toru.simpletoy.view.activity
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.Toolbar
@@ -38,9 +39,9 @@ class StationInfoActivity : BaseActivity(){
         findViewById(R.id.ll_connecting_railroad) as LinearLayout
     }
 
-    val lineImage: ImageView by lazy {
-        findViewById(R.id.img_line_color) as ImageView
-    }
+//    val lineImage: ImageView by lazy {
+//        findViewById(R.id.img_line_color) as ImageView
+//    }
 
     val toolbar:Toolbar by lazy{
         findViewById(R.id.toolbar_station) as Toolbar
@@ -64,9 +65,51 @@ class StationInfoActivity : BaseActivity(){
 
     fun init(){
         intent.apply {
-            val lineCodeColor = intent.getIntExtra("Line_Code", R.color.tokyo_ginza_line)
-            lineImage.setBackgroundColor(lineCodeColor)
-            setStatusBarColor(lineCodeColor)
+            val lineCodeColor = intent.getStringExtra("Line_Code")
+            fun makeLineImage(lineCode:String){
+                Log.w("TORU", "line code color : " + lineCodeColor)
+                val lineImage = findViewById(R.id.img_line_color)
+                when(lineCode){
+                    "C" -> {
+                        lineImage.setBackgroundColor(ContextCompat.getColor(this@StationInfoActivity, R.color.tokyo_chiyoda_line))
+                        setStatusBarColor(R.color.tokyo_chiyoda_line)
+                    }
+                    "F" -> {
+                        lineImage.setBackgroundColor(ContextCompat.getColor(this@StationInfoActivity, R.color.tokyo_fukutoshin_line))
+                        setStatusBarColor(R.color.tokyo_fukutoshin_line)
+                    }
+                    "G" -> {
+                        lineImage.setBackgroundColor(ContextCompat.getColor(this@StationInfoActivity, R.color.tokyo_ginza_line))
+                        setStatusBarColor(R.color.tokyo_ginza_line)
+                    }
+                    "H" -> {
+                        lineImage.setBackgroundColor(ContextCompat.getColor(this@StationInfoActivity, R.color.tokyo_hibiya_line))
+                        setStatusBarColor(R.color.tokyo_hibiya_line)
+                    }
+                    "M", "m" -> {
+                        lineImage.setBackgroundColor(ContextCompat.getColor(this@StationInfoActivity,R.color.tokyo_marunouchi_line))
+                        setStatusBarColor(R.color.tokyo_marunouchi_line)
+                    }
+                    "N" -> {
+                        lineImage.setBackgroundColor(ContextCompat.getColor(this@StationInfoActivity, R.color.tokyo_nanboku_line))
+                        setStatusBarColor(R.color.tokyo_nanboku_line)
+                    }
+                    "T" -> {
+                        lineImage.setBackgroundColor(ContextCompat.getColor(this@StationInfoActivity, R.color.tokyo_tozai_line))
+                        setStatusBarColor(R.color.tokyo_tozai_line)
+                    }
+                    "Y" -> {
+                        lineImage.setBackgroundColor(ContextCompat.getColor(this@StationInfoActivity, R.color.tokyo_yurakucho_line))
+                        setStatusBarColor(R.color.tokyo_yurakucho_line)
+                    }
+                    "Z" -> {
+                        lineImage.setBackgroundColor(ContextCompat.getColor(this@StationInfoActivity, R.color.tokyo_hanzomon_line))
+                        setStatusBarColor(R.color.tokyo_hanzomon_line)
+                    }
+                }
+            }
+            makeLineImage(lineCodeColor)
+
             val stationNameParam = getStringExtra("Station_Info")
             val retrofit = Retrofit.Builder().baseUrl(URL_ENDPOINT)
                     .addConverterFactory(GsonConverterFactory.create())

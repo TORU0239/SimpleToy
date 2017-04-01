@@ -17,12 +17,10 @@
             android:layout_height="250dp"
             app:titleEnabled="true"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
-            <ImageView
+            <TextView
                 android:id="@+id/img_line_color"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/tokyo_ginza_line"
-                android:contentDescription="line_color"/>
+                android:layout_height="match_parent"/>
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar_station"
                 android:layout_width="match_parent"
