@@ -5,6 +5,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.*
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import io.toru.simpletoy.R
@@ -37,6 +38,10 @@ class StationInfoActivity : BaseActivity(){
         findViewById(R.id.ll_connecting_railroad) as LinearLayout
     }
 
+    val lineImage: ImageView by lazy {
+        findViewById(R.id.img_line_color) as ImageView
+    }
+
     val toolbar:Toolbar by lazy{
         findViewById(R.id.toolbar_station) as Toolbar
     }
@@ -58,30 +63,35 @@ class StationInfoActivity : BaseActivity(){
     }
 
     fun init(){
-        val stationNameParam = intent.getStringExtra("Station_Info")
-        val retrofit = Retrofit.Builder().baseUrl(URL_ENDPOINT)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+        intent.apply {
+            val lineCodeColor = intent.getIntExtra("Line_Code", R.color.tokyo_ginza_line)
+            lineImage.setBackgroundColor(lineCodeColor)
+            setStatusBarColor(lineCodeColor)
+            val stationNameParam = getStringExtra("Station_Info")
+            val retrofit = Retrofit.Builder().baseUrl(URL_ENDPOINT)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
 
-        retrofit.create(TokyoMetro::class.java).getSpecificStationInformation(stationNameParam, API_KEY)
-                .enqueue(object:Callback<List<Station>>{
-                    override fun onFailure(call: Call<List<Station>>?, t: Throwable?) {
-                        t?.printStackTrace()
-                    }
-
-                    override fun onResponse(call: Call<List<Station>>?, response: Response<List<Station>>?) {
-                        response?.apply {
-                            when(code()){
-                                200 -> bindInfoToUI(body()[0])
-
-                                else->{
-                                    Log.w("TORU", "failed!!!!")
-                                }
-                            }
+            retrofit.create(TokyoMetro::class.java).getSpecificStationInformation(stationNameParam, API_KEY)
+                    .enqueue(object:Callback<List<Station>>{
+                        override fun onFailure(call: Call<List<Station>>?, t: Throwable?) {
+                            t?.printStackTrace()
                         }
 
-                    }
-                })
+                        override fun onResponse(call: Call<List<Station>>?, response: Response<List<Station>>?) {
+                            response?.apply {
+                                when(code()){
+                                    200 -> bindInfoToUI(body()[0])
+
+                                    else->{
+                                        Log.w("TORU", "failed!!!!")
+                                    }
+                                }
+                            }
+
+                        }
+                    })
+        }
     }
 
     fun bindInfoToUI(params:Station){

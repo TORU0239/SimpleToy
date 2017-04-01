@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -90,16 +91,46 @@ class RailwayListActivity : BaseActivity() {
         fun updateView(obj:RailWay){
             img = itemView.findViewById(R.id.img_line) as ImageView
             when (obj.lineCode){
-                "C" -> img.setImageResource(R.drawable.icon_chiyoda)
-                "F" -> img.setImageResource(R.drawable.icon_fukutoshin)
-                "G" -> img.setImageResource(R.drawable.icon_ginza)
-                "H" -> img.setImageResource(R.drawable.icon_hibiya)
-                "M" -> img.setImageResource(R.drawable.icon_marunouchi)
-                "m" -> img.setImageResource(R.drawable.icon_marunouchi)
-                "N" -> img.setImageResource(R.drawable.icon_namboku)
-                "T" -> img.setImageResource(R.drawable.icon_tozai)
-                "Y" -> img.setImageResource(R.drawable.icon_yurakucho)
-                "Z" -> img.setImageResource(R.drawable.icon_hanzomon)
+                "C" -> {
+                    img.setImageResource(R.drawable.icon_chiyoda)
+                    img.tag = R.color.tokyo_chiyoda_line
+                }
+                "F" -> {
+                    img.setImageResource(R.drawable.icon_fukutoshin)
+                    img.tag = R.color.tokyo_fukutoshin_line
+                }
+                "G" -> {
+                    img.setImageResource(R.drawable.icon_ginza)
+                    img.tag = R.color.tokyo_ginza_line
+                }
+                "H" -> {
+                    img.setImageResource(R.drawable.icon_hibiya)
+                    img.tag = R.color.tokyo_hibiya_line
+                }
+                "M" -> {
+                    img.setImageResource(R.drawable.icon_marunouchi)
+                    img.tag = R.color.tokyo_marunouchi_line
+                }
+                "m" -> {
+                    img.setImageResource(R.drawable.icon_marunouchi)
+                    img.tag = R.color.tokyo_marunouchi_line
+                }
+                "N" -> {
+                    img.setImageResource(R.drawable.icon_namboku)
+                    img.tag = R.color.tokyo_nanboku_line
+                }
+                "T" -> {
+                    img.setImageResource(R.drawable.icon_tozai)
+                    img.tag = R.color.tokyo_tozai_line
+                }
+                "Y" -> {
+                    img.setImageResource(R.drawable.icon_yurakucho)
+                    img.tag = R.color.tokyo_yurakucho_line
+                }
+                "Z" -> {
+                    img.setImageResource(R.drawable.icon_hanzomon)
+                    img.tag = R.color.tokyo_hanzomon_line
+                }
             }
 
             lineName = itemView.findViewById(R.id.txt_line_name) as TextView
@@ -123,6 +154,9 @@ class RailwayListActivity : BaseActivity() {
                     putExtra("title", obj.title)
                     putExtra("stationOrder", obj.stationOrder)
                     putExtra("travelTime", obj.travelTime)
+                    putExtra("line_color", img.tag as Int)
+
+                    Log.w("TORU", "line color :: " + img.tag)
                 }
                 it.context?.startActivity(intent)
             }

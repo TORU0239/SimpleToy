@@ -3,6 +3,7 @@ package io.toru.simpletoy.view.activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -16,6 +17,9 @@ import io.toru.simpletoy.framework.activity.BaseActivity
 import io.toru.simpletoy.model.StationOrder
 
 class RailwayStationActivity : BaseActivity() {
+
+    private var lineCode:Int = 0
+
     override fun getLayoutID(): Int {
         return R.layout.activity_detail
     }
@@ -34,6 +38,7 @@ class RailwayStationActivity : BaseActivity() {
             val title = getStringExtra("title")
             val stationOrderArr = getParcelableArrayExtra("stationOrder")
             var travelTimeArr = getParcelableArrayExtra("travelTime")
+            lineCode = getIntExtra("line_color", R.color.tokyo_ginza_line)
 
 
             fun makeArr(arr:Array<Parcelable>):ArrayList<StationOrder>{
@@ -53,7 +58,7 @@ class RailwayStationActivity : BaseActivity() {
 
             rcvAllLineInfo.addItemDecoration(DividerItemDecoration(this@RailwayStationActivity, DividerItemDecoration.VERTICAL))
             rcvAllLineInfo.layoutManager = LinearLayoutManager(this@RailwayStationActivity)
-            rcvAllLineInfo.adapter = LineAdapter(makeArr(stationOrderArr))
+            rcvAllLineInfo.adapter = LineAdapter(makeArr(stationOrderArr), lineCode)
         }
     }
 
@@ -68,9 +73,9 @@ class RailwayStationActivity : BaseActivity() {
     }
 
 
-    class LineAdapter(var stationList:ArrayList<StationOrder>) : RecyclerView.Adapter<LineViewHolder>(){
+    class LineAdapter(var stationList:ArrayList<StationOrder>, var lineCode:Int) : RecyclerView.Adapter<LineViewHolder>(){
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): LineViewHolder {
-            return LineViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.adapter_line_info, parent, false))
+            return LineViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.adapter_line_info, parent, false), lineCode)
         }
 
         override fun onBindViewHolder(holder: LineViewHolder?, position: Int) {
@@ -82,7 +87,7 @@ class RailwayStationActivity : BaseActivity() {
         }
     }
 
-    class LineViewHolder(view: View) : RecyclerView.ViewHolder(view){
+    class LineViewHolder(view: View, var lineCode:Int) : RecyclerView.ViewHolder(view){
         val name: TextView by lazy {
             itemView.findViewById(R.id.txt_station_name) as TextView
         }
@@ -93,7 +98,9 @@ class RailwayStationActivity : BaseActivity() {
             itemView.setOnClickListener {
                 itemView.context.startActivity(
                         Intent(itemView.context,  StationInfoActivity::class.java)
-                                .putExtra("Station_Info", obj.station))
+                                .putExtra("Station_Info", obj.station)
+                                .putExtra("Line_Code", lineCode))
+
 
             }
         }
