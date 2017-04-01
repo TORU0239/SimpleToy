@@ -29,30 +29,6 @@ import retrofit2.converter.gson.GsonConverterFactory
  * Created by wonyoung on 2017. 3. 23..
  */
 class StationInfoActivity : BaseActivity(){
-//    val txtStationCode:TextView by lazy {
-//        findViewById(R.id.txt_station_code) as TextView
-//    }
-//
-//    val txtStationNameJPN:TextView by lazy {
-//        findViewById(R.id.txt_station_jpn_name) as TextView
-//    }
-//
-//    val txtStationNameENG:TextView by lazy {
-//        findViewById(R.id.txt_station_eng_name) as TextView
-//    }
-//
-//    val llConnectingLine:LinearLayout by lazy {
-//        findViewById(R.id.ll_connecting_railroad) as LinearLayout
-//    }
-//
-//    val txtToolbarStationEngName : TextView by lazy {
-//        findViewById(R.id.txt_toolbar_station_eng_name) as TextView
-//    }
-//
-//    val toolbar:Toolbar by lazy{
-//        findViewById(R.id.toolbar_station) as Toolbar
-//    }
-
     override fun getLayoutID(): Int = R.layout.activity_station_info_2
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,7 +108,6 @@ class StationInfoActivity : BaseActivity(){
                             response?.apply {
                                 when(code()){
                                     200 -> bindInfoToUI(body()[0])
-
                                     else->{
                                         Log.w("TORU", "failed!!!!")
                                     }
@@ -192,6 +167,9 @@ class StationInfoActivity : BaseActivity(){
                 "JR-East"-> return R.drawable.jr_east
                 "Keio"-> return R.drawable.keio_logo
                 "Keisei"-> return R.drawable.keisei_logo
+                "Seibu"->return R.drawable.seibu_ikebukuro
+                "Rinkai" -> return R.drawable.rinkai_logo
+                "Yurikamome" -> return R.drawable.yurikamome_logo
 
                 "Tokyu"-> {
                     when(line.getLineName().toLowerCase()){
@@ -221,17 +199,27 @@ class StationInfoActivity : BaseActivity(){
                         "namboku"-> return R.drawable.icon_namboku
                     }
                 }
-                "Toei"-> return R.drawable.toei_logo
-                else -> return R.drawable.icon_chiyoda
+                "Toei"-> {
+                    when(line.getLineName().toLowerCase()){
+                        "asakusa" -> return R.drawable.toei_asakusa
+                        "mita" -> return R.drawable.toei_mita
+                        "shinjuku" -> return R.drawable.toei_shinjuku
+                        "oedo" -> return R.drawable.toei_oedo
+                    }
+                }
+
+                else -> {
+                    Log.w("TORU", line.getLineOperator());
+                    return R.drawable.toei_logo
+                }
             }
-            return 0
+            return R.drawable.toei_logo
         }
 
         override fun onBindViewHolder(holder: TransferViewHolder?, position: Int) {
             holder?.transferLineName?.text = transferLineList[position].makeRailwayLine().getLineName()
             holder?.transferLineOperator?.setImageResource(getOperatorLogo(transferLineList[position].makeRailwayLine()))
         }
-
         override fun getItemCount(): Int {
             return transferLineList.size
         }
