@@ -89,6 +89,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="20dp" />
 
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcv_transfer_line"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
             <LinearLayout
                 android:id="@+id/ll_connecting_railroad"
                 android:layout_width="match_parent"
