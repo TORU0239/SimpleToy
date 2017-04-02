@@ -100,29 +100,9 @@
                 android:id="@+id/rcv_transfer_line"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp">
-
-                <TextView
-                    android:id="@+id/txt_lat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="37.0"/>
-
-                <TextView
-                    android:id="@+id/txt_lng"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    tools:text="128.0"/>
-
-            </LinearLayout>
-            
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

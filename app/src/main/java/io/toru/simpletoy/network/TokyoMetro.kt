@@ -26,4 +26,10 @@ interface TokyoMetro{
                                       station:String,
                                       @Query("acl:consumerKey")
                                       key:String):Call<List<Station>>
+
+    @GET("datapoints?rdf:type=odpt:StationFacility")
+    fun getStationFacilityInformation(@Query("owl:sameAs")
+                                      station:String,
+                                      @Query("acl:consumerKey")
+                                      key:String):Call<List<Station>>
 }

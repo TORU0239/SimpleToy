@@ -134,13 +134,24 @@ class StationInfoActivity : BaseActivity() {
         initToolbar(txt_station_jpn_name.text.toString())
 
         if(params.connectedRailway.isNotEmpty()){
+            rcv_transfer_line.visibility = View.VISIBLE
             rcv_transfer_line.layoutManager = LinearLayoutManager(this@StationInfoActivity, LinearLayoutManager.HORIZONTAL, false)
             rcv_transfer_line.adapter = TransferAdapter(params.connectedRailway)
             rcv_transfer_line.isNestedScrollingEnabled = false
         }
+        else{
+            rcv_transfer_line.visibility = View.GONE
+        }
 
         for(item in params.exit){
             Log.w("TORU", "exit item: " + item)
+        }
+
+        Log.w("TORU", "facility item: " + params.facility)
+
+
+        for(item in params.passengerSurvey){
+            Log.w("TORU", "passenger item: " + item)
         }
 
         (supportFragmentManager.findFragmentById(R.id.map_simple) as SupportMapFragment).getMapAsync {
