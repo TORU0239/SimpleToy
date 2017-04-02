@@ -12,6 +12,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import io.toru.simpletoy.R
 import io.toru.simpletoy.framework.activity.BaseActivity
 import io.toru.simpletoy.model.Station
@@ -28,7 +34,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 /**
  * Created by wonyoung on 2017. 3. 23..
  */
-class StationInfoActivity : BaseActivity(){
+class StationInfoActivity : BaseActivity() {
+
     override fun getLayoutID(): Int = R.layout.activity_station_info_2
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -130,6 +137,23 @@ class StationInfoActivity : BaseActivity(){
             rcv_transfer_line.layoutManager = LinearLayoutManager(this@StationInfoActivity, LinearLayoutManager.HORIZONTAL, false)
             rcv_transfer_line.adapter = TransferAdapter(params.connectedRailway)
             rcv_transfer_line.isNestedScrollingEnabled = false
+        }
+
+        for(item in params.exit){
+            Log.w("TORU", "exit item: " + item)
+        }
+
+        (supportFragmentManager.findFragmentById(R.id.map_simple) as SupportMapFragment).getMapAsync {
+            it.apply{
+                isMyLocationEnabled = false
+                with(uiSettings){
+                    isScrollGesturesEnabled = false
+                    isZoomControlsEnabled = false
+                }
+                val latlng = LatLng(params.lat.toDouble(), params.lng.toDouble())
+                moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 16f))
+                addMarker(MarkerOptions().draggable(false).position(latlng))
+            }
         }
     }
 

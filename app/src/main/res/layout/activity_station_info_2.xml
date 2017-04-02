@@ -60,7 +60,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="16dp">
 
                 <TextView
                     android:id="@+id/txt_station_code"
@@ -89,6 +90,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="20dp" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Transfer Information"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rcv_transfer_line"
@@ -97,19 +103,51 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
             <LinearLayout
-                android:id="@+id/ll_connecting_railroad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:orientation="horizontal"
+                android:padding="16dp">
+
                 <TextView
+                    android:id="@+id/txt_lat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Transfer."
-                    android:paddingTop="3dp"
-                    android:paddingBottom="10dp"/>
-            </LinearLayout>
+                    tools:text="37.0"/>
 
+                <TextView
+                    android:id="@+id/txt_lng"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    tools:text="128.0"/>
+
+            </LinearLayout>
+            
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <fragment
+                    android:id="@+id/map_simple"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    app:cameraTargetLat="35.6902006"
+                    app:cameraTargetLng="139.6920792"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="#80070A0B"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="Location Info"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"/>
+                
+            </FrameLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

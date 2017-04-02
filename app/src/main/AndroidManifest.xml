@@ -3,6 +3,7 @@
     package="io.toru.simpletoy">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -26,6 +27,10 @@
         <activity android:name=".view.activity.StationInfoActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"/>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/DEBUG_KEY_API" />
     </application>
 
 </manifest>

@@ -8,4 +8,6 @@
 
     <string name="branch_chinse">支線</string>
     <string name="branch_english">branch</string>
+
+    <string name="DEBUG_KEY_API" templateMergeStrategy="preserve" translatable="false">AIzaSyC1gwMO9-YCyJCqiVveiNXxezW_fCABprM</string>
 </resources>
