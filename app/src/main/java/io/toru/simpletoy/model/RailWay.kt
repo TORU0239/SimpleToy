@@ -237,7 +237,7 @@ data class PlatformInformation(@SerializedName("odpt:railway") val railWay:Strin
                                @SerializedName("odpt:carComposition") val carComposition:String,
                                @SerializedName("odpt:carNumber") val carNumber:String,
                                @SerializedName("odpt:railDirection") val railDirection:String,
-                               @SerializedName("odpt:transferInformation") val transferInformation:Array<TransferInformation>,
+                               @SerializedName("odpt:transferInformation") val transferInformation:Array<TransferInformation>?,
                                @SerializedName("odpt:barrierfreeFacility") val barrierfreeFacility:Array<String>,
                                @SerializedName("odpt:surroundingArea") val surroundingArea:Array<String>) : Parcelable {
     companion object {

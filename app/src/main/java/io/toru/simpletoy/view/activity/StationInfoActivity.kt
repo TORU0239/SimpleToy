@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import io.toru.simpletoy.R
 import io.toru.simpletoy.framework.activity.BaseActivity
 import io.toru.simpletoy.model.Station
+import io.toru.simpletoy.model.StationFacility
 import io.toru.simpletoy.network.TokyoMetro
 import kotlinx.android.synthetic.main.activity_station_info_2.*
 import kotlinx.android.synthetic.main.adapter_line_info.*
@@ -35,6 +36,8 @@ import retrofit2.converter.gson.GsonConverterFactory
  * Created by wonyoung on 2017. 3. 23..
  */
 class StationInfoActivity : BaseActivity() {
+
+    private var stationInfo:String = ""
 
     override fun getLayoutID(): Int = R.layout.activity_station_info_2
 
@@ -101,11 +104,16 @@ class StationInfoActivity : BaseActivity() {
             makeLineImage(lineCodeColor)
 
             val stationNameParam = getStringExtra("Station_Info")
+            stationInfo = stationNameParam
+
             val retrofit = Retrofit.Builder().baseUrl(URL_ENDPOINT)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
 
-            retrofit.create(TokyoMetro::class.java).getSpecificStationInformation(stationNameParam, API_KEY)
+            val request = retrofit.create(TokyoMetro::class.java)
+//            odpt.Station:TokyoMetro.Ginza.OmoteSando
+
+            request.getSpecificStationInformation(stationNameParam, API_KEY)
                     .enqueue(object:Callback<List<Station>>{
                         override fun onFailure(call: Call<List<Station>>?, t: Throwable?) {
                             t?.printStackTrace()
@@ -114,7 +122,30 @@ class StationInfoActivity : BaseActivity() {
                         override fun onResponse(call: Call<List<Station>>?, response: Response<List<Station>>?) {
                             response?.apply {
                                 when(code()){
-                                    200 -> bindInfoToUI(body()[0])
+                                    200 -> {
+                                        bindInfoToUI(body()[0])
+
+                                        // test code for facility
+                                        val station = stationNameParam.split(":")[1]
+                                        val tokyoMetro = station.split(".")[0]
+                                        val stationName = station.split(".")[2]
+                                        val stationInfoParam = "odpt.StationFacility:".plus(tokyoMetro).plus(".").plus(stationName)
+                                        request.getStationFacilityInformation(stationInfoParam, API_KEY)
+                                                .enqueue(object:Callback<List<StationFacility>>{
+                                                    override fun onResponse(call: Call<List<StationFacility>>?, response: Response<List<StationFacility>>?) {
+                                                        response?.apply {
+                                                            when(code()){
+                                                                200-> bindFacilityInfoToUI(body())
+                                                                else->Log.w("TORU", "failed facility!!!!")
+                                                            }
+                                                        }
+                                                    }
+
+                                                    override fun onFailure(call: Call<List<StationFacility>>?, t: Throwable?) {
+                                                        t?.printStackTrace()
+                                                    }
+                                                })
+                                    }
                                     else->{
                                         Log.w("TORU", "failed!!!!")
                                     }
@@ -123,6 +154,56 @@ class StationInfoActivity : BaseActivity() {
 
                         }
                     })
+        }
+    }
+
+    fun bindFacilityInfoToUI(params:List<StationFacility>){
+        if(params.isNotEmpty()){
+            Log.w("TORU", "station infro ::" + stationInfo)
+            val railInfo = stationInfo.split(":")[1]
+            railInfo.split(".").let{
+                val temp = it[0] + "." + it[1]
+                Log.w("TORU", "temp:: " + temp)
+                params[0].platformInformation.filter{ it.railWay.contains(temp)}.forEach {
+                    Log.w("TORU", it.railWay)
+                    Log.w("TORU", it.railDirection)
+                    Log.w("TORU", it.carComposition)
+                    Log.w("TORU", it.carNumber)
+                }
+            }
+
+
+
+
+            for(item in params[0].platformInformation){
+                Log.w("TORU", "======================================")
+                Log.w("TORU", "car composition : " + item.carComposition)
+                Log.w("TORU", "car number :: " + item.carNumber)
+                Log.w("TORU", "railway :: " + item.railWay)
+                Log.w("TORU", "rail direction :: " + item.railDirection)
+
+                if(item.barrierfreeFacility != null && item.barrierfreeFacility.isNotEmpty()){
+                    for(item2 in item.barrierfreeFacility){
+                        Log.w("TORU", "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+                        Log.w("TORU", "barrierfreeFacility :: " + item2)
+                    }
+                    Log.w("TORU", "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+                }
+
+                item.transferInformation?.let{
+                    if(it.isNotEmpty()){
+                        for(item2 in it){
+                            Log.w("TORU", "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+                            Log.w("TORU", "transfer necessary time :: " + item2.necessaryTime)
+                            Log.w("TORU", "transfer rail direction :: " + item2.railDirection)
+                            Log.w("TORU", "transfer rail way :: " + item2.railWay)
+
+                        }
+                        Log.w("TORU", "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+                    }
+                }
+            }
+            Log.w("TORU", "======================================")
         }
     }
 
