@@ -159,21 +159,20 @@ class StationInfoActivity : BaseActivity() {
 
     fun bindFacilityInfoToUI(params:List<StationFacility>){
         if(params.isNotEmpty()){
-            Log.w("TORU", "station infro ::" + stationInfo)
             val railInfo = stationInfo.split(":")[1]
             railInfo.split(".").let{
-                val temp = it[0] + "." + it[1]
-                Log.w("TORU", "temp:: " + temp)
-                params[0].platformInformation.filter{ it.railWay.contains(temp)}.forEach {
-                    Log.w("TORU", it.railWay)
-                    Log.w("TORU", it.railDirection)
-                    Log.w("TORU", it.carComposition)
-                    Log.w("TORU", it.carNumber)
+                val railWayName = it[0].insertDot(it[1])  // 현재의 stationInfo 에서 노선 이름을 구한다.
+                var direction : String = ""
+
+                params[0].platformInformation.filter{ it.railWay.contains(railWayName)}.forEachIndexed { _, _ ->
+
+//                    Log.w("TORU", info.railWay)
+//                    Log.w("TORU", info.railDirection)
+//                    Log.w("TORU", info.carComposition)
+//                    Log.w("TORU", info.carNumber + "호차")
+
                 }
             }
-
-
-
 
             for(item in params[0].platformInformation){
                 Log.w("TORU", "======================================")
@@ -253,14 +252,6 @@ class StationInfoActivity : BaseActivity() {
         window.statusBarColor = ContextCompat.getColor(this@StationInfoActivity, colorCode)
     }
 
-    // extension function
-    fun String.makeStationName():String{
-        return this.split(":")[1].split(".")[2] + " " + getString(R.string.station_english)
-    }
-
-    fun String.makeRailwayLine():String =
-            this.split(":")[1]
-
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId){
             android.R.id.home ->{
@@ -269,6 +260,18 @@ class StationInfoActivity : BaseActivity() {
             }
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    // extension function
+    fun String.makeStationName():String{
+        return this.split(":")[1].split(".")[2] + " " + getString(R.string.station_english)
+    }
+
+    fun String.makeRailwayLine():String =
+            this.split(":")[1]
+
+    fun String.insertDot(str1:String):String{
+        return "$this.$str1"
     }
 
     class TransferAdapter(var transferLineList:Array<String>): RecyclerView.Adapter<TransferViewHolder>(){
